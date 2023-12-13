@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import Events from './components/Events/Events';
 import MainHeader from './components/MainHeader/MainHeader';
+import { CartContext } from './components/contextos/context';
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -14,17 +15,20 @@ function App() {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
   }
 
+  // Objeto con propiedades para pasar al contexto CartContext
+  const CartCtxValue = {
+    cartItems: cartItems,
+    onAddItemToCart: addItemHandler,
+    onRemoveItemFromCart: removeItemHandler,
+  }
+
   return (
-    <>
-      <MainHeader cartItems={cartItems} />
+    <CartContext.Provider value={CartCtxValue}>
+      <MainHeader />
       <main>
-        <Events
-          onAddItemToCart={addItemHandler}
-          onRemoveItemFromCart={removeItemHandler}
-          cartItems={cartItems}
-        />
+        <Events />
       </main>
-    </>
+    </CartContext.Provider>
   );
 }
 

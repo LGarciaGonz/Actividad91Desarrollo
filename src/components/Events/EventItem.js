@@ -1,21 +1,28 @@
 import classes from './EventItem.module.css';
+import {EventContext} from '../contextos/context'
+import { useContext } from 'react';
+
 
 function EventItem({ event, isInCart, onAddToCart, onRemoveFromCart }) {
-  let buttonCaption = 'Add to Cart';
-  let buttonAction = onAddToCart;
 
-  if (isInCart) {
+  const EventItemCtx = useContext(EventContext)
+
+  let buttonCaption = 'Add to Cart';
+  let buttonAction = EventItemCtx.onAddToCart;
+
+  // Verificar si el evento está en el carrito según la propiedad isInCart del contexto
+  if (EventItemCtx.isInCart) {
     buttonCaption = 'Remove from Cart';
-    buttonAction = onRemoveFromCart;
+    buttonAction = EventItemCtx.onRemoveFromCart;
   }
 
   return (
     <li className={classes.event}>
-      <img src={event.image} alt={event.title} />
+      <img src={EventItemCtx.event.image} alt={EventItemCtx.event.title} />
       <div className={classes.content}>
-        <h2>{event.title}</h2>
-        <p className={classes.price}>${event.price}</p>
-        <p>{event.description}</p>
+        <h2>{EventItemCtx.event.title}</h2>
+        <p className={classes.price}>${EventItemCtx.event.price}</p>
+        <p>{EventItemCtx.event.description}</p>
         <div className={classes.actions}>
           <button onClick={buttonAction}>{buttonCaption}</button>
         </div>
